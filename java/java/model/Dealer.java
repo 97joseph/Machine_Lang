@@ -1,96 +1,77 @@
 package model;
 
-import model.rules.HitStrategy;
-import model.rules.NewGameStrategy;
-import model.rules.RulesFactory;
+import model.rules.*;
+import model.rules.hitStrategy.IHitStrategy;
+import model.rules.newGameStartegy.INewGameStrategy;
+import model.rules.winnerStrategy.IWinnerStrategy;
 
-/**
- * Represents a dealer player that handles the deck of cards and runs the game using rules.
- */
 public class Dealer extends Player {
 
-  private Deck deck;
-  private NewGameStrategy newGameRule;
-  private HitStrategy hitRule;
+  private Deck m_deck;
+  private INewGameStrategy m_newGameRule;
+  private IHitStrategy m_hitRule;
+  private IWinnerStrategy m_winRule;
 
-  /**
-   * Initializing constructor.
+  public Dealer(RulesAbstractFactory a_rulesAbstractFactory, IVisitor iVisitor) {
+  
+    m_newGameRule = a_rulesAbstractFactory.GetNewGameRule();
+    m_hitRule = a_rulesAbstractFactory.GetHitRule();
+    m_winRule = a_rulesAbstractFactory.GetWinnerStrategy();
 
-   * @param rulesFactory A factory that creates the rules to use.
-   */
-  public Dealer(RulesFactory rulesFactory) {
+    m_newGameRule.accept(iVisitor);
+    m_hitRule.accept(iVisitor);
+    m_winRule.accept(iVisitor);
 
-    newGameRule = rulesFactory.getNewGameRule();
-    hitRule = rulesFactory.getHitRule();
   }
 
-  /**
-   * Starts a new game if the game is not currently under way.
 
-   * @param player The player to play agains.
-   * @return True if the game could be started.
-   */
-  public boolean newGame(Player player) {
-    if (deck == null || isGameOver()) {
-      deck = new Deck();
-      clearHand();
-      player.clearHand();
-      return newGameRule.newGame(deck, this, player);
+  public boolean NewGame(Player a_player) {
+    if (m_deck == null || IsGameOver()) {
+      m_deck = new Deck();
+      ClearHand();
+      a_player.ClearHand();
+      return m_newGameRule.NewGame(this, a_player);
     }
     return false;
   }
 
-  /**
-   * Gives the player one more card if possible. I.e. the player hits.
+  public void getCard(Player dealer, boolean show) {
+    Card card = m_deck.GetCard();
+    card.Show(show);
+    dealer.DealCard(card);
+  }
 
-   * @param player The player to give a card to.
-   * @return true if the player could get a new card, false otherwise.
-   */
-  public boolean hit(Player player) {
-    if (deck != null && player.calcScore() < maxScore && !isGameOver()) {
-      Card.Mutable c;
-      c = deck.getCard();
-      c.show(true);
-      player.dealCard(c);
-
+  public boolean Hit(Player a_player) {
+    if (m_deck != null && a_player.CalcScore() < g_maxScore && !IsGameOver()) {
+      getCard(a_player,true);
       return true;
     }
     return false;
   }
 
-  /**
-   * Checks if the dealer is the winner compared to a player.
+  /** Rona added */
+  public boolean Stand() {
+    if (m_deck != null) {
+      ShowHand();
 
-   * @param player The player to check agains.
-   * @return True if the dealer is the winner, false if the player is the winner.
-   */
-  public boolean isDealerWinner(Player player) {
-    if (player.calcScore() > maxScore) {
-      return true;
-    } else if (calcScore() > maxScore) {
-      return false;
-    }
-    return calcScore() >= player.calcScore();
-  }
-
-  /**
-   * Checks if the game is over, i.e. the dealer can take no more cards.
-
-   * @return True if the game is over.
-   */
-  public boolean isGameOver() {
-    if (deck != null && hitRule.doHit(this) != true) {
+      while (m_hitRule.DoHit(this)) {
+        getCard(this,true);
+      }
       return true;
     }
     return false;
   }
 
-  /**
-   * The player has choosen to take no more cards, it is the dealers turn.
-   */
-  public boolean stand() {
-    //TODO: implement me
-    return false;
+  public boolean IsDealerWinner(Player a_player) {
+
+    return m_winRule.isDealerWinner(CalcScore(),a_player.CalcScore(),g_maxScore);
   }
 
+  public boolean IsGameOver() {
+    if (m_deck != null && m_hitRule.DoHit(this) != true) {
+        return true;
+    }
+    return false;
+  }
+  
 }

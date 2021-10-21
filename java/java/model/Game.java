@@ -1,101 +1,75 @@
 package model;
 
-/**
- * Represents the entirety of the game. Acts as a Facade to the model.
- */
+import model.rules.BasicHitAmericanPlayerWinFactory;
+import model.rules.IVisitor;
+import model.rules.RulesAbstractFactory;
+
 public class Game {
 
-  private Dealer dealer;
-  private Player player;
+  private Dealer m_dealer;
+  private Player m_player;
 
-  /**
-   * Constructor that creates a new game instance with a dealer and player.
-   */
-  public Game() {
-    dealer = new Dealer(new model.rules.RulesFactory());
-    player = new Player();
+  public Game(IVisitor iVisitor)
+  {
+    m_dealer = new Dealer(new BasicHitAmericanPlayerWinFactory(),iVisitor);
+    m_player = new Player();
+
   }
+  public Game(RulesAbstractFactory factory,IVisitor iVisitor)
+  {
+    m_dealer = new Dealer(factory,iVisitor);
+    m_player = new Player();
 
-  /**
-   * Checks if the game has ended.
-
-   * @return true if the game has ended.
-   */
-  public boolean isGameOver() {
-    return dealer.isGameOver();
   }
-
-  /**
-   * Checks if the dealer is the winner.
-
-   * @return True if the dealer has won over the player.
-   */
-  public boolean isDealerWinner() {
-    return dealer.isDealerWinner(player);
+  public void SubscriptionToNewCards(ICardObserver subscriber)
+  {
+    m_player.Subscribe(subscriber);
+    m_dealer.Subscribe(subscriber);
   }
-
-  /**
-   * Stars a new game.
-
-   * @return True if a new game could be started.
-   */
-  public boolean newGame() {
-    return dealer.newGame(player);
+    
+  public boolean IsGameOver()
+  {
+    return m_dealer.IsGameOver();
   }
-
-  /**
-   * Call to let the player get a new card.
-
-   * @return True if the player got a new card.
-   */
-  public boolean hit() {
-    return dealer.hit(player);
+  
+  public boolean IsDealerWinner()
+  {
+    return m_dealer.IsDealerWinner(m_player);
   }
-
-  /**
-   * Call to let the dealer take cards.
-
-   * @return True if the dealer has the initiaive.
-   */
-  public boolean stand() {
-    // TODO: implement me
-    return false;
+  
+  public boolean NewGame()
+  {
+    return m_dealer.NewGame(m_player);
   }
-
-  /**
-   * Gets the cards currently in the dealer's hand.
-
-   * @return The dealer's cards.
-   */
-  public Iterable<Card> getDealerHand() {
-    return dealer.getHand();
+  
+  public boolean Hit()
+  { return m_dealer.Hit(m_player);
   }
-
-  /**
-   * Gets the cards currently in the player's hand.
-
-   * @return The palyer's cards.
-   */
-  public Iterable<Card> getPlayerHand() {
-    return player.getHand();
+  
+  public boolean Stand()
+  {
+    // TODO: Implement this according to Game_Stand.sequencediagram
+    return m_dealer.Stand();
   }
-
-  /**
-   * Returns the score of the dealer's hand.
-
-   * @return the score.
-   */
-  public int getDealerScore() {
-    return dealer.calcScore();
+  
+  public Iterable<Card> GetDealerHand()
+  {
+    return m_dealer.GetHand();
   }
-
-  /**
-   * Returns the score of the player's hand.
-
-   * @return the score.
-   */
-  public int getPlayerScore() {
-    return player.calcScore();
+  
+  public Iterable<Card> GetPlayerHand()
+  {
+    return m_player.GetHand();
+  }
+  
+  public int GetDealerScore()
+  {
+    return m_dealer.CalcScore();
+  }
+  
+  public int GetPlayerScore()
+  {
+    return m_player.CalcScore();
   }
 
 }

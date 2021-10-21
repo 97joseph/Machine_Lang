@@ -12,7 +12,7 @@ public class Player {
   /**
    * Runs the play use case.
 
-   * @param game The game state.
+   * @param game state.
    * @param view The view to use.
    * @return True as long as the game should continue.
    */

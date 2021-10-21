@@ -1,59 +1,51 @@
 package model;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.LinkedList;
 
-/**
- * Represents a deck of playingcards.
- */
 public class Deck {
-
-  private List<Card.Mutable> cards;
+  private List<Card> m_cards;
   
-
-  /**
-   * Creates a deck with 52 cards of every color and value in random order.
-   */
   public Deck() {
-    cards = new LinkedList<Card.Mutable>();
-
-    for (int colIx = 0; colIx < Card.Color.Count.ordinal(); colIx++) {
-      for (int valIx = 0; valIx < Card.Value.Count.ordinal(); valIx++) {
-        Card.Mutable c = new Card.Mutable(Card.Color.values()[colIx], Card.Value.values()[valIx]);
-        addCard(c);
+    m_cards = new LinkedList<>();
+  
+    for(int cIx = 0; cIx < Card.Color.Count.ordinal(); cIx++) {
+      for (int vIx = 0; vIx < Card.Value.Count.ordinal(); vIx++) {
+        Card c = new Card(Card.Color.values()[cIx], Card.Value.values()[vIx]);
+        AddCard(c);
       }
     }
-
-    shuffle();
+    
+    Shuffle();
   }
+  
 
-  private void addCard(Card.Mutable cardToAdd) {
-    cards.add(cardToAdd);
+  public void AddCard(Card a_cardToAdd) {
+    m_cards.add(a_cardToAdd);
   }
-
-  /**
-   * Gets the first card in the deck. The card is removed from the deck.
-
-   * @return the card to get and remove.
-   */
-  public Card.Mutable getCard() {
-    Card.Mutable c = cards.get(0);
-    cards.remove(0);
-
+  
+  public Card GetCard() {
+    Card c = m_cards.get(0);
+    m_cards.remove(0);
+    
     return c;
   }
-
-  private void shuffle() {
-    
-    for (int i = 0; i < 1017; i++) {
-      int index = ThreadLocalRandom.current().nextInt(cards.size());
-      Card.Mutable c = cards.get(index);
-      cards.remove(index);
-      addCard(c);
-    }
+  
+  public Iterable<Card> GetCards()
+  {
+      return m_cards;
   }
-
+  
+  private void Shuffle()
+  {
+      for (int i = 0; i < 1017; i++)
+      {
+          int index = (int)(Math.random() * 171717.0) % m_cards.size();
+          Card c = m_cards.get(index);
+          m_cards.remove(index);
+          AddCard(c);
+      }
+  }
+  
 }
