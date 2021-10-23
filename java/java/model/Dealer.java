@@ -7,6 +7,7 @@ import model.rules.winnerStrategy.IWinnerStrategy;
 
 public class Dealer extends Player {
 
+  //Requirement 4
   private Deck m_deck;
   private INewGameStrategy m_newGameRule;
   private IHitStrategy m_hitRule;

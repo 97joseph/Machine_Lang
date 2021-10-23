@@ -1,5 +1,9 @@
 package view;
 
+//1. Study the class diagram and the source code to understand the design of the game.
+//2. Implement the operation Game::Stand using the sequence diagram Game_Stand.
+//The game should now be playable.
+
 /**
  * Encapsulates the generic view functionality.
  */

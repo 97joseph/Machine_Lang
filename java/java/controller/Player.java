@@ -16,6 +16,8 @@ public class Player {
    * @param view The view to use.
    * @return True as long as the game should continue.
    */
+
+   //Requirement 6
   public boolean play(Game game, View view) {
     view.displayWelcomeMessage();
 

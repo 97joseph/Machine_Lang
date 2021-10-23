@@ -10,7 +10,7 @@ public class BasicHitStrategy implements IHitStrategy {
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
-
+//Rq8
     //we have to add new rule here
     public boolean DoHit(Player a_dealer) {
         return a_dealer.CalcScore() < g_hitLimit;

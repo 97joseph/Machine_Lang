@@ -35,6 +35,9 @@ public class PlayGame implements ICardObserver {
             a_view.DisplayGameOver(a_game.IsDealerWinner());
         }
 
+        //Requirement 3
+
+        
         //here we have hidden dependency
         //we need to use enum to remove hidden dependency
         a_view.collectEvents();

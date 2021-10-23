@@ -33,7 +33,7 @@ public class EnglishView implements View {
       return 0;
     }
   }
-
+//Requirement 5- Who wins the Game  
   public void displayCard(model.Card card) {
     System.out.println("" + card.getValue() + " of " + card.getColor());
   }

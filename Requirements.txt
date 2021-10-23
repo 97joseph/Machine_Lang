@@ -1,0 +1,5 @@
+Requirement 1/2-view.java
+Requirement 4-Dealer.java/Soft17Rule.java
+Requirement 3-PlayGame.java
+Reequirement 5-EnglishView.java
+Requirement 6-Player.java/AmericanNewGameStrategy.java

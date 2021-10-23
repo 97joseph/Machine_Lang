@@ -49,10 +49,12 @@ public class Game {
   public boolean Stand()
   {
     // TODO: Implement this according to Game_Stand.sequencediagram
+  //Requirement 4 
     return m_dealer.Stand();
   }
   
   public Iterable<Card> GetDealerHand()
+  
   {
     return m_dealer.GetHand();
   }

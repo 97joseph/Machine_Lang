@@ -126,7 +126,7 @@ public class Controller implements Initializable, ICardObserver{
         int i = 0;
         int j = 0;
         for(Card card : a_game.GetDealerHand()){
-
+//Requirement 8
             this.card = new Image("view/PNG/" + card.GetValue()+card.GetColor() + ".png");
             // Pause();
             dealerCards[i].setVisible(true);
@@ -200,16 +200,21 @@ public class Controller implements Initializable, ICardObserver{
             PlayerWin.setVisible(true);
         }
     }
+//Requirement5
+    //Design and implement a variable rule for who wins the game. This variation could, for
+//example, change who wins on an equal score (in one implementation the Dealer
+//wins, in the other the Player). The design should make it easy to add other variants
+//without changing the Dealer. Use the same design pattern as used in the Soft 17
+//design.
 
-//    public String DisplayGameOver(boolean a_dealerIsWinner)
-//    {
-//        if (a_dealerIsWinner) {
-//            return "Dealer Won!";
-//        }
-//        else {
-//            return "You Won!";
-//        }
-//    }
+  public String DisplayGameOver(boolean a_dealerIsWinner)    {
+       if (a_dealerIsWinner) {
+            return "Dealer Won!";
+        }
+        else {
+            return "You Won!";
+        }
+    }
 
     public void Pause(){
         try{
